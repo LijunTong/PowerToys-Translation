@@ -1,0 +1,17 @@
+# Build output
+[Bb]in/
+[Oo]bj/
+
+# Per-user secrets: never commit the translation API credentials
+config.json
+config.example.json
+
+# Visual Studio / Rider
+.vs/
+.idea/
+*.user
+*.suo
+
+# Logs and scratch
+*.log
+*.tmp

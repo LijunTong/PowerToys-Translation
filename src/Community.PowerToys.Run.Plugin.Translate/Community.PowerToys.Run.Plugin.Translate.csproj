@@ -1,0 +1,60 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- PowerToys 0.64.1 is built against net6.0-windows (verified from
+         PowerToys.PowerLauncher.runtimeconfig.json). Wox.Plugin.Result exposes
+         System.Windows.Visibility/ImageSource, so WPF must be referenceable. -->
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <OutputType>Library</OutputType>
+    <AssemblyName>Community.PowerToys.Run.Plugin.Translate</AssemblyName>
+    <RootNamespace>Community.PowerToys.Run.Plugin.Translate</RootNamespace>
+    <LangVersion>10.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <NeutralLanguage>en-US</NeutralLanguage>
+
+    <Version>1.0.0</Version>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+    <Product>PowerToys Run Translate plugin</Product>
+
+    <!-- PowerToys install path. Override with -p:PowerToysPath=... if needed. -->
+    <PowerToysPath Condition="'$(PowerToysPath)' == ''">C:\Program Files\PowerToys</PowerToysPath>
+    <PowerToysLauncherPath>$(PowerToysPath)\modules\launcher</PowerToysLauncherPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Reference the exact assemblies the host already has loaded.
+         Private=false: these must NOT be copied next to the plugin, otherwise
+         the plugin would ship duplicate framework/contract assemblies. -->
+    <Reference Include="Wox.Plugin">
+      <HintPath>$(PowerToysLauncherPath)\Wox.Plugin.dll</HintPath>
+      <Private>false</Private>
+      <SpecificVersion>false</SpecificVersion>
+    </Reference>
+    <!-- Common.UI supplies the Common.UI.ThemeChangedHandler delegate used by
+         IPublicAPI.ThemeChanged; ManagedCommon supplies the ManagedCommon.Theme enum returned by
+         IPublicAPI.GetCurrentTheme(). Both are needed to observe theme changes. -->
+    <Reference Include="PowerToys.Common.UI">
+      <HintPath>$(PowerToysLauncherPath)\PowerToys.Common.UI.dll</HintPath>
+      <Private>false</Private>
+      <SpecificVersion>false</SpecificVersion>
+    </Reference>
+    <Reference Include="PowerToys.ManagedCommon">
+      <HintPath>$(PowerToysLauncherPath)\PowerToys.ManagedCommon.dll</HintPath>
+      <Private>false</Private>
+      <SpecificVersion>false</SpecificVersion>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Plugin payload: manifest + theme icons must sit next to the DLL. -->
+    <None Include="plugin.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="Images\*.png" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>
